@@ -62,14 +62,7 @@ const Projects = () => {
                   ))}
                 </div>
                 
-                <div className="grid-container grid-2">
-                  <button className="py-3 px-4 border-2 border-cyan-400 rounded-lg text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 font-semibold">
-                    View Code
-                  </button>
-                  <button className="py-3 px-4 bg-gradient-to-r from-cyan-500 to-pink-500 rounded-lg text-black font-semibold hover-lift shadow-glow">
-                    Live Demo
-                  </button>
-                </div>
+
               </div>
             </div>
           ))}

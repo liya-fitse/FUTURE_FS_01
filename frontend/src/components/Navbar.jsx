@@ -21,9 +21,7 @@ const Navbar = () => {
       isScrolled ? "glass-card py-4" : "bg-transparent py-6"
     }`}>
       <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
-        <div className="text-2xl font-bold gradient-text">
-          LIYA.DEV
-        </div>
+
         
         <div className="hidden md:flex space-x-8">
           {["Home", "About", "Skills", "Projects", "Contact"].map((item) => (
