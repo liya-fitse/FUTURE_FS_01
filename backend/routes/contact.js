@@ -1,69 +1,60 @@
 import express from "express";
-import Message from "../models/Message.js";
 import nodemailer from "nodemailer";
+
 const router = express.Router();
 
-// Email transporter setup
-const transporter = nodemailer.createTransporter({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
+// Verify environment variables
+if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.error("Missing email credentials in environment variables");
+}
+
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    },
+    tls: {
+        rejectUnauthorized: false
+    }
+});
+
+// Verify transporter configuration
+transporter.verify((error, success) => {
+    if (error) {
+        console.error("Transporter verification failed:", error);
+    } else {
+        console.log("Email transporter is ready");
+    }
 });
 
 router.post("/", async (req, res) => {
-  try {
     const { name, email, message } = req.body;
-    
-    // Validate input
-    if (!name || !email || !message) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "All fields are required" 
-      });
-    }
 
-    // Save to database (optional - can work without MongoDB)
-    try {
-      const newMessage = new Message({ name, email, message });
-      await newMessage.save();
-    } catch (dbError) {
-      console.log("Database save failed, continuing without DB:", dbError.message);
-    }
-
-    // Send email notification (optional)
-    try {
-      const mailOptions = {
+    const mailOptions = {
         from: process.env.EMAIL_USER,
-        to: process.env.RECIPIENT_EMAIL || 'your-email@example.com',
-        subject: `New Portfolio Contact: ${name}`,
-        html: `
-          <h3>New Contact Form Submission</h3>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Message:</strong></p>
-          <p>${message}</p>
-        `
-      };
-      
-      await transporter.sendMail(mailOptions);
-    } catch (emailError) {
-      console.log("Email send failed, continuing:", emailError.message);
-    }
+        to: process.env.RECIPIENT_EMAIL,
+        subject: `New message from ${name}`,
+        text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
+    };
 
-    res.status(200).json({ 
-      success: true, 
-      message: "Message received successfully! I'll get back to you soon." 
-    });
-    
-  } catch (error) {
-    console.error("Contact form error:", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Something went wrong. Please try again later." 
-    });
-  }
+    try {
+        console.log("Attempting to send email...");
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Email sent successfully:", info.messageId);
+        res.status(200).json({ message: "Email sent successfully!" });
+    } catch (err) {
+        console.error("Detailed email error:", {
+            message: err.message,
+            code: err.code,
+            command: err.command,
+            response: err.response
+        });
+        res.status(500).json({ 
+            message: "Failed to send email",
+            error: err.message 
+        });
+    }
 });
 
 export default router;

@@ -1,42 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState("");
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus("Sending...");
-    
-    try {
-      const response = await fetch('http://localhost:5000/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
-      
-      const data = await response.json();
-      
-      if (data.success) {
-        setStatus("Message sent! 🚀");
-        setFormData({ name: "", email: "", message: "" });
-      } else {
-        setStatus("Failed to send message. Please try again.");
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setStatus("Network error. Please check your connection.");
-    }
-    
-    // Clear status after 3 seconds
-    setTimeout(() => setStatus(""), 3000);
-  };
 
   const contactMethods = [
     { icon: "📧", label: "Email", value: "liyafitsumbrehan@gmail.com", link: "mailto:liyafitsumbrehan@gmail.com" },
@@ -55,80 +19,28 @@ const Contact = () => {
           <p className="text-gray-300 text-lg">Ready to bring your ideas to life?</p>
         </div>
 
-        {/* Main Grid */}
-        <div className="grid lg:grid-cols-2 gap-12 mb-16">
-          {/* Contact Info */}
-          <div className="space-y-8">
-            <div className="glass-card rounded-2xl p-8 hover-glow">
-              <h3 className="text-2xl font-bold text-white mb-6">Get In Touch</h3>
-              <p className="text-gray-300 mb-8 leading-relaxed">
-                I'm always excited to work on new projects and collaborate with amazing people. 
-                Let's create something incredible together!
-              </p>
-              
-              <div className="grid grid-cols-1 gap-6">
-                {contactMethods.map((method, index) => (
-                  <a key={index} href={method.link} className="flex items-center gap-4 hover:bg-gray-800 p-3 rounded-lg transition-all duration-300">
-                    <div className="w-12 h-12 bg-gradient-to-r from-cyan-400 to-pink-400 rounded-full flex items-center justify-center text-black">
-                      {method.icon}
-                    </div>
-                    <div>
-                      <p className="text-gray-400">{method.label}</p>
-                      <p className="text-white">{method.value}</p>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Form */}
+        {/* Contact Info */}
+        <div className="max-w-4xl mx-auto mb-16">
           <div className="glass-card rounded-2xl p-8 hover-glow">
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 transition-colors duration-300"
-                />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your Email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 transition-colors duration-300"
-                />
-              </div>
-              
-              <textarea
-                name="message"
-                placeholder="Your Message"
-                rows="5"
-                value={formData.message}
-                onChange={handleChange}
-                required
-                className="px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 transition-colors duration-300 resize-none"
-              ></textarea>
-              
-              <button
-                type="submit"
-                className="py-4 bg-gradient-to-r from-cyan-500 to-pink-500 rounded-lg text-black font-semibold hover-glow transition-all duration-300"
-              >
-                Send Message 🚀
-              </button>
-              
-              {status && (
-                <div className="text-center text-cyan-400 font-semibold">
-                  {status}
-                </div>
-              )}
-            </form>
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">Get In Touch</h3>
+            <p className="text-gray-300 mb-8 leading-relaxed text-center">
+              I'm always excited to work on new projects and collaborate with amazing people. 
+              Let's create something incredible together!
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {contactMethods.map((method, index) => (
+                <a key={index} href={method.link} className="flex items-center gap-4 hover:bg-gray-800 p-3 rounded-lg transition-all duration-300">
+                  <div className="w-12 h-12 bg-gradient-to-r from-cyan-400 to-pink-400 rounded-full flex items-center justify-center text-black">
+                    {method.icon}
+                  </div>
+                  <div>
+                    <p className="text-gray-400">{method.label}</p>
+                    <p className="text-white">{method.value}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
 

@@ -4,6 +4,14 @@ const Projects = () => {
   const projects = [
     {
       id: 1,
+      title: "CeraVe Rebranding Project",
+      description: "Complete brand identity redesign for CeraVe skincare products with modern UI/UX approach",
+      tech: ["Figma", "Adobe Creative Suite", "Brand Strategy", "UI/UX Design"],
+      image: "🎨",
+      featured: true
+    },
+    {
+      id: 2,
       title: "E-Commerce Platform",
       description: "Full-stack e-commerce solution with React, Node.js, and Stripe integration",
       tech: ["React", "Node.js", "MongoDB", "Stripe"],

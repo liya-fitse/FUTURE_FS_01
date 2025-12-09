@@ -6,21 +6,24 @@ import contactRoute from "./routes/contact.js";
 
 dotenv.config();
 
-// MongoDB connection (optional)
-if (process.env.MONGODB_URI) {
-  mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log("Connected to MongoDB"))
-    .catch((err) => console.log("MongoDB connection failed:", err.message));
-} else {
-  console.log("No MongoDB URI provided, running without database");
-}
+// MongoDB connection
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+  .then(() => console.log("Database connected"))
+  .catch((err) => console.error("Database connection error:", err));
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Middleware
 app.use(cors({
-  origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+  origin: [
+    "http://localhost:3000", 
+    "http://127.0.0.1:3000",
+    process.env.FRONTEND_URL || "*"
+  ],
   credentials: true
 }));
 app.use(express.json());

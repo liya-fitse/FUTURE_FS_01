@@ -59,7 +59,7 @@ const Hero = () => {
           <div className="grid-container grid-2">
             <div className="glass-card rounded-2xl p-6 text-center hover-glow grid-item shadow-card">
               <div className="text-4xl mb-3">💻</div>
-              <div className="text-2xl font-bold gradient-text">2</div>
+              <div className="text-2xl font-bold gradient-text">3</div>
               <div className="text-gray-300 text-sm">Projects</div>
             </div>
             <div className="glass-card rounded-2xl p-6 text-center hover-glow grid-item shadow-card">
